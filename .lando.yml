@@ -1,0 +1,38 @@
+name: drupal10
+recipe: drupal10
+domain: drupal10.local.com
+config:
+  webroot: web
+  php: 8.1
+  via: nginx:1.16
+  database: mysql:5.7
+  drush:
+  xdebug: true
+  config:
+    vhosts: .lando/nginx/drupal10.local.com
+    php: .lando/php/php.ini
+tooling:
+  drush:
+    service: appserver
+    cmd: drush --root=/app/web -l drupal10.local.com
+services:
+  appserver:
+    composer_version:
+    overrides:
+      environment:
+        PHP_IDE_CONFIG: "serverName=localhost"
+  pma:
+    type: phpmyadmin:5.0
+    hosts: [ database ]
+  mailhog:
+    type: mailhog:v1.0.0
+    portforward: true
+    hogfrom:
+      - appserver
+proxy:
+  appserver_nginx:
+    - drupal10.local.com
+  pma:
+    - pma.drupal10.local.com
+  mailhog:
+    - mailhog.drupal10.local.com
