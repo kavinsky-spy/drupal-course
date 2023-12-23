@@ -1,0 +1,5 @@
+name: 'custom_configuration'
+type: module
+description: 'Creates custom config for our platform'
+package: Julio
+core_version_requirement: ^10
