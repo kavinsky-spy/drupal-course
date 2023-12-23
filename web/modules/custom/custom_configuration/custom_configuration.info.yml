@@ -1,5 +1,5 @@
-name: 'custom_configuration'
+name: "Custom configuration"
 type: module
-description: 'Creates custom config for our platform'
-package: Julio
+description: "Creates a custom config for our platform."
+package: "Julio"
 core_version_requirement: ^10

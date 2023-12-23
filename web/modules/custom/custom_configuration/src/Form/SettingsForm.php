@@ -1,74 +1,77 @@
-<?php
-
-
+<?php declare(strict_types = 1);
 
 namespace Drupal\custom_configuration\Form;
 
-use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
-class SettingsForm extends FormBase {
+/**
+ * Configure Custom configuration settings for this site.
+ */
+final class SettingsForm extends ConfigFormBase {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFormId() {
-        return 'custom_configuration_settings';
+  /**
+   * {@inheritdoc}
+   */
+  public function getFormId(): string {
+    return 'custom_configuration_settings';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getEditableConfigNames(): array {
+    return ['custom_configuration.settings'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state): array {
+    $form['sociallinks'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Social Links'),
+      '#open' => TRUE,
+    ];
+    $form['sociallinks']['facebook'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Facebook'),
+      '#default_value' => $this->config('custom_configuration.settings')->get('facebook'),
+    ];
+    $form['sociallinks']['twitter'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Twitter'),
+      '#default_value' => $this->config('custom_configuration.settings')->get('twitter'),
+    ];
+    return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state): void {
+    // validate form values, they need to be links
+    $facebook = $form_state->getValue('facebook');
+    $twitter = $form_state->getValue('twitter');
+    if (!filter_var($facebook, FILTER_VALIDATE_URL)) {
+      $form_state->setErrorByName('facebook', $this->t('Facebook link is not valid'));
     }
-
-    protected function getEditableConfigNames() {
-        return [
-            'custom_configuration.settings',
-        ];
+    if (!filter_var($twitter, FILTER_VALIDATE_URL)) {
+      $form_state->setErrorByName('twitter', $this->t('Twitter link is not valid'));
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(array $form, FormStateInterface $form_state) {
-        // Add form elements here
-        $form['sociallinks'] = [
-            '#type' => 'details',
-            '#title' => $this->t('Social Links'),
-            '#open' => TRUE,
-        ];
-        $form['sociallinks']['facebook'] = [
-            '#type' => 'textfield',
-            '#title' => $this->t('Facebook'),
-            '#default_value' => $config->get('custom_configuration.settings')->get('facebook'),
-        ];
-        $form['sociallinks']['twitter'] = [
-            '#type' => 'textfield',
-            '#title' => $this->t('Twitter'),
-            '#default_value' => $config->get('custom_configuration.settings')->get('twitter'),
-        ];
     
-    
+    parent::validateForm($form, $form_state);
+  }
 
-        return parent::buildForm($form, $form_state);
-    }
-
-    public function validateForm(array &$form, FormStateInterface $form_state) {
-        // Validate submitted form data here
-        // $email = $form_state->getValue('email');
-        // if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        //     $form_state->setErrorByName('email', $this->t('The email address %mail is not valid.', ['%mail' => $email]));
-        // }
-        // parent::validateForm($form, $form_state);
-    }
-    
-
-    /**
-     * {@inheritdoc}
-     */
-    public function submitForm(array &$form, FormStateInterface $form_state) {
-        // Handle form submission here
-        $name = $form_state->getValue('name');
-        $email = $form_state->getValue('email');
-
-        // Perform necessary actions with the submitted data
-
-        drupal_set_message($this->t('Form submitted successfully.'));
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
+    $this->config('custom_configuration.settings')
+      ->set('facebook', $form_state->getValue('facebook'))
+      ->set('twitter', $form_state->getValue('twitter'))
+      ->save();
+    parent::submitForm($form, $form_state);
+  }
 
 }

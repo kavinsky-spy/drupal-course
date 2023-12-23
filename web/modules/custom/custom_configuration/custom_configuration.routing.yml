@@ -1,7 +1,7 @@
-custom_configuration.settings_form:
-  path: "/admin/config/system/custom-configuration"
+custom_configuration.settings:
+  path: '/admin/config/system/settings'
   defaults:
-    _form: '\Drupal\custom_configuration\Form\SettingsForm'
-    _title: "Custom Configuration"
+    _title: 'Settings'
+    _form: 'Drupal\custom_configuration\Form\SettingsForm'
   requirements:
-    _permission: "administer custom_configuration configuration"
+    _permission: 'administer site configuration'
