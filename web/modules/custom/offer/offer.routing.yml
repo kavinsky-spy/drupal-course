@@ -1,0 +1,7 @@
+offer.example:
+  path: '/offer/example'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\offer\Controller\OfferController'
+  requirements:
+    _permission: 'access content'

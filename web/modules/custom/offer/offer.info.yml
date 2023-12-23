@@ -1,0 +1,7 @@
+name: 'offer'
+type: module
+description: 'Main module for the offer platform'
+package: Custom
+core_version_requirement: ^10
+dependencies:
+  - drupal:views
