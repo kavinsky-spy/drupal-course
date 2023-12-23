@@ -1,7 +1,15 @@
 /node_modules
-web/core
+/web/core
+/web/modules/contrib
+/web/profiles/contrib
+/web/themes/contrib
+
 
 /vendor
 /.idea
 
 .env
+
+# Site specific
+/web/sites/*
+
