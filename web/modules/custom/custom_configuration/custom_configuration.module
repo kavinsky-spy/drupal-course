@@ -1,0 +1,18 @@
+<?php
+
+
+/**
+ * Set a template form my social links block
+ */
+function custom_configuration_theme($existing, $type, $theme, $path) {
+  return [
+    'social_links' => [
+      'variables' => [
+        'facebook' => NULL,
+        'twitter' => NULL,
+      ],
+      'template' => 'social-links',
+    ],
+  ];
+}
+
