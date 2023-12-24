@@ -23,13 +23,14 @@
         "drupal/core-project-message": "^10.0",
         "drupal/core-recommended": "^10.0",
         "drupal/examples": "^4.0",
+        "drupal/gin": "^3.0@RC",
         "drupal/webform": "^6.2",
         "drush/drush": "^12.1"
     },
     "conflict": {
         "drupal/drupal": "*"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
         "allow-plugins": {
