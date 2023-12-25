@@ -41,6 +41,17 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *   },
  *   handlers = {
  *    "access" = "Drupal\offer\OfferAccessControlHandler",
+ *    "form" = {
+ *     "add" = "Drupal\offer\Form\OfferForm",
+ *     "edit" = "Drupal\offer\Form\OfferForm",
+ *     "delete" = "Drupal\offer\Form\OfferDeleteForm",
+ *     },
+ *    "links" = {
+ *     "canonical" = "/offer/{offer}"
+ *     "delete-form" = "/offer/{offer}/delete",
+ *     "edit-form" = "/offer/{offer}/edit",
+ *     "create" = "/offer/create",
+ *    },
  *   }
  * )
  */
@@ -130,7 +141,7 @@ class Offer extends EditorialContentEntityBase {
 
   /**
    * {@inheritdoc}
-   * 
+   *
    * Makes the current user the owner of the offer.
    */
   public static function preCreate(EntityStorageInterface $storage_controller, array &$values) {

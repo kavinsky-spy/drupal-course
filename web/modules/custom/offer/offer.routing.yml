@@ -5,3 +5,37 @@ offer.example:
     _controller: '\Drupal\offer\Controller\OfferController'
   requirements:
     _permission: 'access content'
+
+offer.add:
+  path: '/offers/create'
+  defaults:
+    _entity_form: offer.add
+    _title: 'add offer'
+  requirements:
+    _entity_create_access: 'offer'
+
+
+entity.offer.edit_form:
+  path: '/offers/{offer}/edit'
+  defaults:
+    _entity_form: offer.edit
+    _title: 'edit offer'
+  requirements:
+    _entity_access: 'offer.edit'
+
+entity.offer.delete_form:
+  path: '/offers/{offer}/delete'
+  defaults:
+    _entity_form: offer.delete
+    _title: 'delete offer'
+  requirements:
+    _entity_access: 'offer.delete'
+
+entity.offer.canonical:
+  path: '/offers/{offer}'
+  defaults:
+    _entity_view: offer
+    _title: 'Offer'
+  requirements:
+    _entity_access: 'offer.view'
+
