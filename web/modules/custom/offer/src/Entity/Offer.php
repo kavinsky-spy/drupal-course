@@ -87,6 +87,7 @@ class Offer extends EditorialContentEntityBase {
     $fields['title'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Title'))
       ->setDescription(t('The title of the offer'))
+      ->setRequired(TRUE)
       ->setSettings([
         'max_length' => 150,
         'text_processing' => 0,
