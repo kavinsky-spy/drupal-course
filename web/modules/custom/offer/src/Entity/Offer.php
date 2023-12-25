@@ -46,13 +46,13 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     "edit" = "Drupal\offer\Form\OfferForm",
  *     "delete" = "Drupal\offer\Form\OfferDeleteForm",
  *     },
- *    "links" = {
- *     "canonical" = "/offer/{offer}"
- *     "delete-form" = "/offer/{offer}/delete",
- *     "edit-form" = "/offer/{offer}/edit",
- *     "create" = "/offer/create",
  *    },
- *   }
+ *   links = {
+ *    "canonical" = "/offer/{offer}",
+ *    "delete-form" = "/offer/{offer}/delete",
+ *    "edit-form" = "/offer/{offer}/edit",
+ *    "create" = "/offer/create",
+ *    },
  * )
  */
 
