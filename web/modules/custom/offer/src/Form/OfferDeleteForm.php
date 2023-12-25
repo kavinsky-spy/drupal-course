@@ -21,10 +21,7 @@ class OfferDeleteForm extends ContentEntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t(
-      'Are you sure you want to delete %name?',
-      array('%name' => $this->entity->label())
-    );
+    return $this->t('Are you sure you want to delete %name?', array('%name' => $this->entity->label()));
   }
   /**
    * {@inheritdoc}
@@ -32,8 +29,7 @@ class OfferDeleteForm extends ContentEntityConfirmFormBase {
    * If the delete command is canceled, return to the offer.
    */
   public function getCancelUrl() {
-    return Url::fromRoute('entity.offer.edit_form', ['offer' =>
-    $this->entity->id()]);
+    return Url::fromRoute('entity.offer.edit_form', ['offer' => $this->entity->id()]);
   }
   /**
    * {@inheritdoc}
@@ -49,12 +45,7 @@ class OfferDeleteForm extends ContentEntityConfirmFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $entity = $this->getEntity();
     $entity->delete();
-    $this->logger('offer')->notice(
-      'deleted %title.',
-      array(
-        '%title' => $this->entity->label(),
-      )
-    );
+    $this->logger('offer')->notice('deleted %title.', array('%title' => $this->entity->label(),));
     // Redirect to offer list after delete.
     $form_state->setRedirect('entity.offer.collection');
   }
