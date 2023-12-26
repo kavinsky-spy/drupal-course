@@ -54,7 +54,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *    "edit-form" = "/offer/{offer}/edit",
  *    "create" = "/offer/create",
  *    },
- *   field_ui_base_route: "entity.offer.settings"
+ *   field_ui_base_route = "entity.offer.settings"
  * )
  */
 
