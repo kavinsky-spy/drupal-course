@@ -24,6 +24,7 @@
         "drupal/core-recommended": "^10.0",
         "drupal/examples": "^4.0",
         "drupal/gin": "^3.0@RC",
+        "drupal/mysql56": "^1.7",
         "drupal/webform": "^6.2",
         "drush/drush": "^12.1"
     },

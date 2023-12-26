@@ -54,6 +54,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *    "edit-form" = "/offer/{offer}/edit",
  *    "create" = "/offer/create",
  *    },
+ *   field_ui_base_route: "entity.offer.settings"
  * )
  */
 
@@ -106,23 +107,6 @@ class Offer extends EditorialContentEntityBase {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['message'] = BaseFieldDefinition::create('string_long') // Create a new field definition for the 'message' field
-      ->setLabel(t('Message')) // Set the label for the field to 'Message'
-      ->setRequired(TRUE) // Set the field as required
-      ->setDisplayOptions('form', [ // Set the display options for the field in the form view
-          'type' => 'string_textarea', // Use a textarea for input
-          'weight' => 4, // Set the weight of the field in the form
-          'settings' => [
-            'rows' => 12, // Set the number of rows for the textarea
-          ],
-      ])
-      ->setDisplayConfigurable('form', TRUE) // Allow the field to be configurable in the form display settings
-      ->setDisplayOptions('view', [ // Set the display options for the field in the view mode
-          'type' => 'string', // Use a string formatter for display
-          'weight' => 0, // Set the weight of the field in the view
-          'label' => 'above', // Display the label above the field value
-      ])
-      ->setDisplayConfigurable('view', TRUE); // Allow the field to be configurable in the view display settings
 
     $fields['status'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Publishing status'))
