@@ -21,12 +21,21 @@ class OfferAccessControlHandler extends EntityAccessControlHandler {
    * the $operation as defined in the routing.yml file.
    */
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
+
     $access = AccessResult::forbidden();
+
     switch ($operation) {
       case 'view':
-        if ($account->hasPermission('administer own offers')) {
-          $access = AccessResult::allowedIf($account->id() == $entity->getOwnerId())->cachePerUser()->addCacheableDependency($entity);
+        // draft, publish, expired
+        if($entity->get('moderation_state')->getString() == 'draft') {
+          if ($account->hasPermission('administer own offers')) {
+            $access = AccessResult::allowedIf($account->id() == $entity->getOwnerId())->cachePerUser()->addCacheableDependency($entity);
+          }
+        } else {
+
+          $acess = AccessResult::allowed()->addCacheableDependency($entity);
         }
+
         break;
       case 'update': // Shows the edit buttons in operations
         if ($account->hasPermission('administer own offers')) {
