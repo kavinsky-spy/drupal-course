@@ -32,8 +32,7 @@ class OfferAccessControlHandler extends EntityAccessControlHandler {
             $access = AccessResult::allowedIf($account->id() == $entity->getOwnerId())->cachePerUser()->addCacheableDependency($entity);
           }
         } else {
-
-          $acess = AccessResult::allowed()->addCacheableDependency($entity);
+          $access = AccessResult::allowed()->addCacheableDependency($entity);
         }
 
         break;
