@@ -1,8 +1,8 @@
 <a href="{{ path('entity.offer.canonical', {'offer': offer.id()}) }}" {{ attributes.addClass('offer-teaser') }}>
-	{% if promo %}
-		<div class="badge">{{promo }}</div>
+	{% if offer.getPromoText() %}
+    <div class="badge">{{ offer.getPromoText() }}</div>
 	{% endif %}
-	<div class="product-tumb">
+	<div class="product-thumb">
 		{{ content.field_image }}
 	</div>
 	<div class="product-details">
