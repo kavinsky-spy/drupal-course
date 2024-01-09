@@ -23,6 +23,15 @@ class OfferAddFormStep3 extends ContentEntityForm {
     /* @var $entity \Drupal\offer\Entity\Offer */
     $form = parent::buildForm($form, $form_state);
     $form['actions']['submit']['#value'] = t('Save and proceed');
+
+
+    $form['field_price']['#states'] = [
+      'visible' => [
+        ['select[name="field_offer_type"]' => ['value' => 'with_minimum']],
+      ]
+    ];
+
+
     return $form;
   }
   /**
