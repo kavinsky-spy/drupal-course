@@ -13,3 +13,4 @@
 # Site specific
 /web/sites/*
 
+.sql
