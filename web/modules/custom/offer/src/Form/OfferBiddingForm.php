@@ -30,6 +30,7 @@ class OfferBiddingForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, $offer = NULL) {
 
+    $price = null;
     switch ($offer->get('field_offer_type')->getString()) {
       case 'with_minimum':
         $price = $offer->get('field_price')->getString();

@@ -67,3 +67,19 @@ function offer_views_pre_render(ViewExecutable $view) {
     $view->element['#attached']['library'][] = 'offer/offer_overview_page';
   }
 }
+
+
+/*
+* implements hook_page_attachments_alter()
+*/
+function offer_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'offer/platform';
+}
+
+
+function offer_preprocess_html(&$variables) {
+  $offer = \Drupal::routeMatch()->getParameter('offer');
+  if($offer) {
+    $variables['attributes']['class'][] = 'offer-detail-page';
+  }
+}
