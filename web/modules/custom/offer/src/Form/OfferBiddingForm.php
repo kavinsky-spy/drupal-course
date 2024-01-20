@@ -4,7 +4,7 @@ namespace Drupal\offer\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\offer\Entity\Offer;
+use Drupal\bid\Entity\Bid;
 
 class OfferBiddingForm extends FormBase {
 
@@ -39,6 +39,13 @@ class OfferBiddingForm extends FormBase {
         $price = '0';
         break;
     }
+
+    $form['offer_id'] = [
+      '#type' => 'hidden',
+      '#value' => $offer->id(),
+      '#access' => FALSE,
+    ];
+
     $form['price'] = [
       '#markup' => '<h2>' . $this->t('Start bidding at @price$', ['@price' =>
       $price]) . '</h2>',
@@ -73,6 +80,13 @@ class OfferBiddingForm extends FormBase {
 
 
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $bid = Bid::create([
+      'bid' => $form_state->getValue('bid'),
+      'user_id' => ['target_id' => \Drupal::currentUser()->id()],
+      'offer_id' => $form_state->getValue('offer_id'),
+    ]);
+    $bid->save();
+    \Drupal::messenger()->addMessage($this->t('Your bid was successfully submitted'));
 
   }
 }
