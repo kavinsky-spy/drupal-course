@@ -11,42 +11,48 @@
 
 /** Main menu + user menu **/
 .navigation.menu--main ul, .navigation.menu--account ul {
-list-style:none;
-height: 50px;
+  list-style:none;
+  height: 50px;
 }
+
 .navigation.menu--account {
-float:right;
+  float:right;
 }
+
 .navigation.menu--main {
-float:left;
+  float:left;
 }
 .navigation.menu--main ul li, .navigation.menu--account ul li {
-float:left;
-list-style:none;
+  float:left;
+  list-style:none;
 }
+
 .navigation.menu--main .menu, .navigation.menu--account .menu {
-margin: 0;
+  margin: 0;
 }
-.navigation.menu--main ul li a, .navigation.menu--account ul li a
-{
-color: #0444C4;
-padding: 20px;
-text-decoration:none;
-font-size: 0.8125rem;
+
+.navigation.menu--main ul li a, .navigation.menu--account ul li a {
+  color: #0444C4;
+  padding: 20px;
+  text-decoration:none;
+  font-size: 0.8125rem;
 }
-.navigation.menu--main ul li a.is-active, .navigation.menu--main
-ul li a:hover, .navigation.menu--account ul li a.is-active,
+
+.navigation.menu--main ul li a.is-active,
+.navigation.menu--main ul li a:hover,
+.navigation.menu--account ul li a.is-active,
 .navigation.menu--account ul li a:hover {
-background: #E5EDFD;
-color:black;
+  background: #E5EDFD;
+  color:black;
 }
+
 /** breadcrumbs **/
 .block-system-breadcrumb-block {
-clear:both;
-margin-left: min(5vw,48px);
-margin-right: min(5vw,48px);
+  clear:both;
+  margin-left: min(5vw,48px);
+  margin-right: min(5vw,48px);
 }
 .count-badge {
-color: red;
-font-weight: 600;
+  color: red;
+  font-weight: 600;
 }
