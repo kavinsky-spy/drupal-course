@@ -11,6 +11,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\bid\Entity\Bid;
 
 /**
  * Defines the offer entity.
@@ -180,5 +181,56 @@ class Offer extends EditorialContentEntityBase {
 
     return '';
   }
+
+
+/**
+ * Return highest bid on an offer
+ *
+ * @return integer|null
+ * the bid price
+ */
+  public function getOfferHighestBid() {
+    $bids = [];
+    $id = $this->id();
+    $query = \Drupal::entityQuery('bid')
+    ->condition('offer_id', $id)
+    ->sort('bid', 'ASC')
+    ->range(NULL, 1)
+    ->accessCheck(FALSE);
+
+    $bidIds = $query->execute();
+
+    $price = null;
+
+    foreach($bidIds as $id) {
+      $bid = Bid::load($id);
+      $price = $bid->get('bid')->getString();
+    }
+
+    return $price;
+
+  }
+
+/**
+ *  Returns all bids of an offer
+ *  @return array $bids
+ *  Array of bid entities
+ */
+public function getOfferBids() {
+  $bids = [];
+  $id = $this->id();
+
+  $query = \Drupal::entityQuery('bid')
+    ->condition('offer_id', $id)
+    ->sort('bid', 'DESC')
+    ->accessCheck(FALSE);
+
+  $bidIds = $query->execute();
+  foreach($bidIds as $id) {
+    $bid = Bid::load($id);
+    $bids[] = $bid;
+  }
+  return $bids;
+}
 
 }
