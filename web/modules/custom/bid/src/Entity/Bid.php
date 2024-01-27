@@ -25,24 +25,28 @@ use Drupal\Core\Entity\EntityTypeInterface;
  * revision_table = "bid_revision",
  * revision_data_table = "bid_field_revision",
  * entity_keys = {
- * "id" = "id",
- * "uuid" = "uuid",
- * "label" = "title",
- * "owner" = "uid",
- * "revision" = "vid",
- * "published" = "status",
- * "uid" = "uid",
- * "owner" = "uid",
+ *  "id" = "id",
+ *  "uuid" = "uuid",
+ *  "label" = "title",
+ *  "owner" = "uid",
+ *  "revision" = "vid",
+ *  "published" = "status",
+ *  "uid" = "uid",
+ *  "owner" = "uid",
  * },
  * handlers = {
- * "access" = "Drupal\bid\BidAccessControlHandler",
+ *  "access" = "Drupal\bid\BidAccessControlHandler",
  * },
  * revision_metadata_keys = {
- * "revision_user" = "revision_uid",
- * "revision_created" = "revision_timestamp",
- * "revision_log_message" = "revision_log"
+ *  "revision_user" = "revision_uid",
+ *  "revision_created" = "revision_timestamp",
+ *  "revision_log_message" = "revision_log"
+ * },
+ *
+ * constraints = {
+ *  "AllFieldsRequired" = {}
  * }
- * )
+ *)
  */
 class Bid extends EditorialContentEntityBase {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {

@@ -61,13 +61,13 @@ class OfferBiddingForm extends FormBase {
 
     $form['bid'] = [
       '#type' => 'number',
-      '#attributes' => [
-        'type' => 'number',
-        'min' => $price
-      ],
+      // '#attributes' => [
+      //   'type' => 'number',
+      //   'min' => $price
+      // ],
       '#title' => $this->t('Your bid'),
       '#description' => $this->t('Prices in $. ' .  $form_state->getValue('bid')),
-      '#required' => TRUE,
+      // '#required' => TRUE,
     ];
     // Group submit handlers in an actions element with a key of "actions" .
       $form['actions'] = [
@@ -83,37 +83,37 @@ class OfferBiddingForm extends FormBase {
 
   }
 
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
+  // public function validateForm(array &$form, FormStateInterface $form_state) {
+  //   parent::validateForm($form, $form_state);
 
 
-    $minimum_price = 0;
-    // Load the offer and make sure no higher bids were done
-    // in the meantime!
-    $offer_id = $form_state->getValue('offer_id');
-    $offer = Offer::load($offer_id);
-    $OfferHasBid = $offer->getOfferHighestBid();
-    switch ($offer->get('field_offer_type')->getString()) {
-      case 'with_minimum':
-        $minimum_price = isset($OfferHasBid) ? $OfferHasBid : $offer->get('field_price')->getString();
-        break;
-      case 'no_minimum';
-        $minimum_price = isset($OfferHasBid) ? $OfferHasBid : 0;
-        break;
-    }
+  //   $minimum_price = 0;
+  //   // Load the offer and make sure no higher bids were done
+  //   // in the meantime!
+  //   $offer_id = $form_state->getValue('offer_id');
+  //   $offer = Offer::load($offer_id);
+  //   $OfferHasBid = $offer->getOfferHighestBid();
+  //   switch ($offer->get('field_offer_type')->getString()) {
+  //     case 'with_minimum':
+  //       $minimum_price = isset($OfferHasBid) ? $OfferHasBid : $offer->get('field_price')->getString();
+  //       break;
+  //     case 'no_minimum';
+  //       $minimum_price = isset($OfferHasBid) ? $OfferHasBid : 0;
+  //       break;
+  //   }
 
 
 
-    if ($minimum_price >= $form_state->getValue('bid')) {
-      $form_state->setErrorByName('bid', t('Minimum bid needs to be @price', ['@price' => (@$minimum_price + 1) . '$']));;
-    }
+  //   if ($minimum_price >= $form_state->getValue('bid')) {
+  //     $form_state->setErrorByName('bid', t('Minimum bid needs to be @price', ['@price' => (@$minimum_price + 1) . '$']));;
+  //   }
 
 
-    // server-side validation
-    if (!is_numeric($form_state->getValue('bid'))) {
-      $form_state->setErrorByName('bid', t('Bid input needs to be numeric.'));
-    }
-  }
+  //   // server-side validation
+  //   if (!is_numeric($form_state->getValue('bid'))) {
+  //     $form_state->setErrorByName('bid', t('Bid input needs to be numeric.'));
+  //   }
+  // }
 
 
 
@@ -123,8 +123,17 @@ class OfferBiddingForm extends FormBase {
       'user_id' => ['target_id' => \Drupal::currentUser()->id()],
       'offer_id' => $form_state->getValue('offer_id'),
     ]);
-    $bid->save();
-    \Drupal::messenger()->addMessage($this->t('Your bid was successfully submitted'));
+
+    $violations = $bid->validate();
+    $validation = $violations->count();
+
+    if ($validation == 0) {
+      $bid->save();
+      \Drupal::messenger()->addMessage($this->t('Your bid was successfully submitted'));
+    } else {
+      \Drupal::messenger()->addWarning($violations[0]->getMessage());
+    }
+
 
   }
 }
