@@ -31,6 +31,7 @@ class OfferBiddingForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, $offer = NULL) {
 
+    $price = '';
     $form['#cache'] = ['max-age' => 0];
 
     switch ($offer->get('field_offer_type')->getString()) {

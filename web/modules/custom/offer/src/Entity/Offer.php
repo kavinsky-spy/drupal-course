@@ -170,16 +170,24 @@ class Offer extends EditorialContentEntityBase {
    * @return string the price
    */
   public function getPriceAmount() {
+    $price = '';
+    $OfferHasBid = $this->getOfferHighestBid();
     switch($this->get('field_offer_type')->getString()) {
       case 'with_minimum':
-        return $this->get('field_price')->getString() . '$';
+        $price = $this->get('field_price')->getString() . '$';
 
 
       case 'no_minimum':
-        return 'Start bidding at 0$';
+        $price = 'Start bidding at 0$';
+    }
+    if ($OfferHasBid) {
+      $price = 'Highest bid currently ' . $OfferHasBid . '$';
+
+    } else {
+      $price = 'No bids yet. Grab your chance!';
     }
 
-    return '';
+    return $price;
   }
 
 
@@ -232,5 +240,16 @@ public function getOfferBids() {
   }
   return $bids;
 }
+
+/**
+ *  Returns the bid amount
+ */
+public function getBidAmount() {
+  $bids = $this->getOfferBids();
+
+  return count($bids);
+
+}
+
 
 }
