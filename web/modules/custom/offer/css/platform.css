@@ -56,3 +56,9 @@
   color: red;
   font-weight: 600;
 }
+
+/** bidding block **/
+.offer-detail-page .block-offer-bidding-table-block {
+  float: right;
+  width: 40%;
+}

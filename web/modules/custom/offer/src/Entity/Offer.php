@@ -251,5 +251,36 @@ public function getBidAmount() {
 
 }
 
+/**
+ * Returns a rendered table below an offer
+ * @return a drupal table render array
+ */
+public function getOfferBiddingTable() {
+  $bids = $this->getOfferBids();
+  $row = [];
+
+  foreach($bids as $bid) {
+    $price = $bid->get('bid')->getString();
+    $owner = $bid->getOwner();
+    $ownerName = $owner->getDisplayName();
+    $time = \Drupal::service('date.formatter')->formatTImeDiffSince($bid->created->value);
+    $row = [
+      $ownerName . ' - '. $time . ' ago', $price . '$'
+    ];
+    $rows[] = $row;
+  }
+
+  $build['table'] = [
+    '#type' => 'table',
+    '#rows' => $rows,
+    '#empty' => t('This offer has no bids yet. Grab your chance!')
+  ];
+
+  return [
+    '#type' => '#markup',
+    '#markup' => \Drupal::service('renderer')->render($build)
+  ];
+
+}
 
 }
