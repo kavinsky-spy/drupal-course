@@ -1,3 +1,5 @@
+{{ attach_library('offer/platform') }}
+
 <a href="{{ path('entity.offer.canonical', {'offer': offer.id()}) }}" {{ attributes.addClass('offer-teaser') }}>
 	{% if offer.getBidAmount() < 1 %}
     <div class="badge">Be the first!</div>

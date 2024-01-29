@@ -15,6 +15,10 @@
   height: 50px;
 }
 
+.gin-secondary-toolbar {
+  height: 8rem;
+}
+
 .navigation.menu--account {
   float:right;
 }

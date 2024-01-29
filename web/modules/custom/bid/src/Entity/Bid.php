@@ -97,4 +97,43 @@ class Bid extends EditorialContentEntityBase {
   public function getOwnerId() {
     return $this->get('user_id')->target_id;
   }
+
+  /**
+   * Checks if the bid has revisions
+   * @return bool
+   *  True if it has, false if it does not
+   */
+  public function hasRevisions() {
+    $id = $this->id();
+    $query = \Drupal::entityQuery('bid')
+    ->condition('id', $id)
+    ->accessCheck(TRUE);
+
+    $count = $query->allRevisions()->count()->execute();
+
+
+    if($count > 1) {
+      return true;
+    }
+
+    return false;
+  }
+
+
+  /**
+   * Returns list of revision entity ids of the bind. Key is the revision ID.
+   *
+   * @return array
+   */
+  public function getRevisionList() {
+    $id = $this->id();
+    $query = \Drupal::entityQuery('id')
+    ->condition('id', $id)
+    ->accessCheck(TRUE);
+
+    $revisions = $query->allRevisions()->execute();
+
+    return $revisions;
+
+  }
 }

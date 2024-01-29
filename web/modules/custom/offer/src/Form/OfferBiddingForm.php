@@ -73,10 +73,15 @@ class OfferBiddingForm extends FormBase {
       $form['actions'] = [
         '#type' => 'actions',
       ];
+
+    $currentUserHasBid = $offer->currentUserHasBids();
+    $callToAction = $currentUserHasBid ? $this->t('Raise my bid') : $this->t('Submit');
+
+
     // Add a submit button that handles the submission of the form.
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Submit'),
+      '#value' => $callToAction,
     ];
 
     return $form;
@@ -118,10 +123,36 @@ class OfferBiddingForm extends FormBase {
 
 
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $offer = Offer::load($form_state->getValue('offer_id'));
+    $current_userId = \Drupal::currentUser()->id();
+    $form_state_offerId = $form_state->getValue('offer_id');
+
+    if($offer->currentUserHasBids()) {
+      $bid = $offer->currentUserBid();
+
+      $bid->set('bid', $form_state->getValue('bid'));
+      $bid->set('offer_id', ['target_id' => $form_state_offerId]);
+      $bid->set('user_id', ['target_id' => $current_userId]);
+
+
+      $bid->setNewRevision();
+      $bid->setRevisionLogMEssage('Bid raised for offer '. $form_state_offerId);
+      $bid->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+      $bid->setRevisionUserId($current_userId);
+
+    } else {
+      $bid = Bid::create([
+        'bid' => $form_state->getValue('bid'),
+        'user_id' => ['target_id' => $current_userId],
+        'offer_id' => $form_state_offerId,
+      ]);
+    }
+
+
     $bid = Bid::create([
       'bid' => $form_state->getValue('bid'),
-      'user_id' => ['target_id' => \Drupal::currentUser()->id()],
-      'offer_id' => $form_state->getValue('offer_id'),
+      'user_id' => ['target_id' => $current_userId],
+      'offer_id' => $form_state_offerId,
     ]);
 
     $violations = $bid->validate();
