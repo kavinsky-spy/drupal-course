@@ -14,6 +14,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\bid\Entity\Bid;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
+use Drupal\Component\Serialization\Json;
 
 /**
  * Defines the offer entity.
@@ -301,7 +302,20 @@ class Offer extends EditorialContentEntityBase {
       $link = '';
       if ($bid->access('delete')) {
         $url = $bid->toUrl('delete-form'); // key entity form
-        $link = Link::fromTextAndUrl('Remove bid', $url)->toString();
+        $deleteLink = [
+          '#type' => 'link',
+          '#title' => 'Remove bid',
+          '#url' => $url,
+          '#attributes' =>[
+            'class' => [
+              'use-ajax', 'button','button-small', 'button-danger'
+            ],
+            'data-dialog-type' => 'modal',
+            'data-dialog-options'=> Json::encode(['title' => t('Remove bid?'), 'width' => 800])
+          ],
+        ];
+
+        $link = \Drupal::service('renderer')->render($deleteLink);
       }
 
 
