@@ -2,6 +2,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\notification\Entity\Notification;
 use Drupal\views\ViewExecutable;
 
 function offer_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
@@ -69,7 +70,7 @@ function offer_views_pre_render(ViewExecutable $view) {
 }
 
 
-/*
+/**
 * implements hook_page_attachments_alter()
 */
 function offer_page_attachments(array &$attachments) {
@@ -82,4 +83,30 @@ function offer_preprocess_html(&$variables) {
   if($offer) {
     $variables['attributes']['class'][] = 'offer-detail-page';
   }
+}
+
+
+/**
+ * Implements hook_ENTITY_TYPE_update();
+ */
+function offer_offer_update(\Drupal\Core\Entity\EntityInterface $entity) {
+  // content moderation state
+  $currentState = $entity->get('moderation_state')->getString();
+
+  // original moderatio nstate
+  $originalState = $entity->original->get('moderation_state')->getString();
+
+  if(($originalState == 'published') && ($currentState == 'expired')) {
+    $bids = $entity->getOfferBids();
+
+    foreach($bids as $bid) {
+      Notification::create([
+        'type' => 'expired',
+        'user_id' => ['target_id' => $bid->getOwnerId()],
+        'offer_id' => ['target_id' => $entity->id()]
+      ])->save();
+    }
+
+  }
+
 }
