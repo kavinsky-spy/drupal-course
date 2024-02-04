@@ -35,14 +35,4 @@ class OfferForm extends ContentEntityForm {
   }
 
 
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-    // server-side validation
-    if (!is_numeric($form_state->getValue('bid'))) {
-      $form_state->setErrorByName('bid', t('Bid input needs to be numeric.'));
-    }
-  }
-
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-  }
 }

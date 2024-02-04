@@ -36,6 +36,12 @@ use Drupal\Core\Entity\EntityTypeInterface;
  * },
  * handlers = {
  *  "access" = "Drupal\bid\BidAccessControlHandler",
+ *  "form" = {
+ *     "delete" = "Drupal\bid\Form\BidDeleteForm",
+ *  },
+ * },
+ * links = {
+ *    "delete-form" = "/bid/{bid}/delete",
  * },
  * revision_metadata_keys = {
  *  "revision_user" = "revision_uid",

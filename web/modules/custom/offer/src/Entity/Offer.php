@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\bid\Entity\Bid;
+use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 
 /**
@@ -297,10 +298,17 @@ class Offer extends EditorialContentEntityBase {
 
       }
 
+      $link = '';
+      if ($bid->access('delete')) {
+        $url = $bid->toUrl('delete-form'); // key entity form
+        $link = Link::fromTextAndUrl('Remove bid', $url)->toString();
+      }
+
 
       $row = [
         Markup::create($ownerName . ' - ' . $time . ' ago' ),
-        Markup::create($price . '$' . $updates)
+        Markup::create($price . '$' . $updates),
+        Markup::create($link)
       ];
       $rows[] = $row;
     }
