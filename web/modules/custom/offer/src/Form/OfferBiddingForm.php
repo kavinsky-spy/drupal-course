@@ -5,6 +5,7 @@ namespace Drupal\offer\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\bid\Entity\Bid;
+use Drupal\Core\Cache\Cache;
 use Drupal\offer\Entity\Offer;
 
 class OfferBiddingForm extends FormBase {
@@ -160,6 +161,7 @@ class OfferBiddingForm extends FormBase {
 
     if ($validation == 0) {
       $bid->save();
+      Cache::invalidateTags($offer->getCacheTags());
       \Drupal::messenger()->addMessage($this->t('Your bid was successfully submitted'));
     } else {
       \Drupal::messenger()->addWarning($violations[0]->getMessage());

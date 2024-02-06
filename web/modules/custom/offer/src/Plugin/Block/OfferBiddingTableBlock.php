@@ -3,6 +3,7 @@
 namespace Drupal\offer\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -82,10 +83,21 @@ class OfferBiddingTableBlock extends BlockBase implements ContainerFactoryPlugin
 
 
   /**
-   *{@inheritDoc}
+   * Cache per page
    */
-  public function getCacheMaxAge() {
-    return 0;
+  public function getCacheContexts() {
+    return ['url.path'];
+  }
+
+  /**
+   *  Invalidate caches when there are new bids
+   */
+  public function getCacheTags() {
+    $offer = $this->requestStack->getCurrentRequest()->get('offer');
+    $offerId = $offer->id();
+
+    return Cache::mergeTags(parent::getCacheTags(), ['offer:'. $offerId]);
+
   }
 
 
