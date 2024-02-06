@@ -75,6 +75,7 @@ function offer_views_pre_render(ViewExecutable $view) {
 */
 function offer_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'offer/platform';
+  $attachments['#attached']['library'][] = 'notification/notification';
 }
 
 

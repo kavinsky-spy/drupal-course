@@ -72,10 +72,20 @@ class NotificationMessage extends FieldPluginBase {
       $url = Url::fromRoute('entity.offer.canonical', array('offer' => $offer->id()));
       $link = Link::fromTextAndUrl($offer->label(), $url)->toRenderable();
       $text = 'Offer '. \Drupal::service('renderer')->render($link) .' has expired.';
+
+      // Add delete link for removing notifications
+      $deleteUrl = Url::fromRoute('notification.delete', ['method' => 'nojs', 'id' => $entity->id()]);
+      $deleteLink = Link::fromTextAndUrl('Remove', $deleteUrl)->toRenderable();
+      $deleteLink['#attributes'] = ['class' => 'use-ajax'];
+      $deleteText = \Drupal::service('renderer')->render($deleteLink);
+
+      $output = $text .' ' . $deleteText;
+
+
     }
 
     return [
-      '#children' => $text
+      '#children' => $output
     ];
   }
 
