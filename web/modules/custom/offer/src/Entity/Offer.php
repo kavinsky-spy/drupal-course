@@ -15,6 +15,7 @@ use Drupal\bid\Entity\Bid;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 use Drupal\Component\Serialization\Json;
+use Drupal\notification\Entity\Notification;
 
 /**
  * Defines the offer entity.
@@ -144,6 +145,55 @@ class Offer extends EditorialContentEntityBase {
     ];
   }
 
+
+  /**
+   * {@inheritDoc}
+   *
+   */
+  public static function preDelete(EntityStorageInterface $storage, array $entities) {
+    parent::preDelete($storage, $entities);
+
+    foreach($entities as $entity) {
+      $entity->deleteAllLinkedbids();
+      $entity->deleteAllLinkedNotifications();
+    }
+  }
+
+  /**
+   * Delete all bids linked to the offer
+   * @param bool $delete
+   */
+  public function deleteAllLinkedbids($delete = FALSE) {
+    $id = $this->id();
+    $query = \Drupal::entityQuery('bid')
+    ->condition('offer_id', $id)
+    ->accessCheck(FALSE);
+
+    $bidIds = $query->execute();
+
+    foreach($bidIds as $id) {
+      $bid = Bid::load($id);
+      $bid->delete();
+    }
+  }
+
+    /**
+   * Delete all notifications linked to the offer
+   * @param bool $delete
+   */
+  public function deleteAllLinkedNotifications($delete = FALSE) {
+    $id = $this->id();
+    $query = \Drupal::entityQuery('notification')
+    ->condition('offer_id', $id)
+    ->accessCheck(FALSE);
+
+    $notificationIds = $query->execute();
+
+    foreach($notificationIds as $id) {
+      $notification = Notification::load($id);
+      $notification->delete();
+    }
+  }
 
   /**
    * {@inheritdoc}
