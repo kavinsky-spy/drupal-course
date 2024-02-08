@@ -33,7 +33,7 @@ class MyOffers extends MenuLinkDefault {
  *
  * @return void
  */
-  public function getCacheMaxAge() {
-    return 0;
+  public function getCacheContexts() {
+    return ['my_offers_user_' . \Drupal::currentUser()->id()];
   }
 }

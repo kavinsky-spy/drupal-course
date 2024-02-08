@@ -9,6 +9,7 @@ namespace Drupal\offer\Form;
 
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Cache\Cache;
 
 /**
  * Form controller for the offer entity edit forms.
@@ -32,6 +33,8 @@ class OfferAddFormStep1 extends ContentEntityForm {
     // Redirect to Step 2.
     $entity = $this->getEntity();
     $entity->save();
+
+    Cache::InvalidateTags(['my_offers_user_' . $entity->getOwnerId()]);
     $id = $entity->id();
 
     $form_state->setRedirect('offer.step2', ['offer' => $id]);

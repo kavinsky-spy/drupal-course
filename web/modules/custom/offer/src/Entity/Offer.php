@@ -156,6 +156,7 @@ class Offer extends EditorialContentEntityBase {
     foreach($entities as $entity) {
       $entity->deleteAllLinkedbids();
       $entity->deleteAllLinkedNotifications();
+      Cache::InvalidateTags(['my_offers_user_' . $entity->getOwnerID()]);                                                                                                                       ]);
     }
   }
 
