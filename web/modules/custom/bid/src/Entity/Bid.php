@@ -8,8 +8,11 @@
 namespace Drupal\bid\Entity;
 
 use Drupal\Core\Entity\EditorialContentEntityBase;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Cache\Cache;
+use Drupal\offer\Entity\Offer;
 
 /**
  * Defines the bid entity.
@@ -141,5 +144,31 @@ class Bid extends EditorialContentEntityBase {
 
     return $revisions;
 
+  }
+
+
+  /**
+   *  {@inheritDoc}
+   */
+  public function postSave(EntityStorageInterface $storage, $update = TRUE) {
+    $this->invalidateTagsOnSave($update);
+    $offer = Offer::load($this->get('offer_id')->target_id);
+    Cache::invalidateTags($offer->getCacheTagsToInvalidate());
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public static function postDelete(EntityStorageInterface $storage, array $entities) {
+    static::invalidateTagsOnDelete($storage->getEntityType(), $entities);
+
+    // Invalidate all caches of offers whenever bids are deleted
+    foreach($entities as $entity) {
+      $offer = Offer::load($entity->get('offer_id')->target_id);
+      if ($offer) {
+        Cache::invalidateTags($offer->getCacheTagsToInvalidate());
+      }
+
+    }
   }
 }
