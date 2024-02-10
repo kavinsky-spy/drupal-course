@@ -4,6 +4,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\notification\Entity\Notification;
 use Drupal\views\ViewExecutable;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 function offer_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
   $forms =['offer_step_1_form', 'offer_step_2_form', 'offer_step_3_form', 'offer_edit_form'];
@@ -110,4 +111,16 @@ function offer_offer_update(\Drupal\Core\Entity\EntityInterface $entity) {
 
   }
 
+}
+
+
+
+/**
+ * Implements hook_user_login()
+ */
+function offer_user_login($account) {
+  $middleware = \Drupal::service('http_middleware.redirect_users_after_login');
+
+  $response = new RedirectResponse("/");
+  $middleware->setRedirectResponse($response);
 }
