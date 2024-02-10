@@ -8,3 +8,8 @@ services:
     class: \Drupal\offer\StackMiddleware\UserLoginMiddleware
     tags:
       - { name: http_middleware }
+
+  offer.route_subscriber:
+    class: Drupal\offer\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
