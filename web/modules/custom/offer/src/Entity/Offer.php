@@ -16,6 +16,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 use Drupal\Component\Serialization\Json;
 use Drupal\notification\Entity\Notification;
+use Drupal\Core\Cache\Cache;
 
 /**
  * Defines the offer entity.
@@ -156,7 +157,7 @@ class Offer extends EditorialContentEntityBase {
     foreach($entities as $entity) {
       $entity->deleteAllLinkedbids();
       $entity->deleteAllLinkedNotifications();
-      Cache::InvalidateTags(['my_offers_user_' . $entity->getOwnerID()]);                                                                                                                       ]);
+      Cache::InvalidateTags(['my_offers_user_' . $entity->getOwnerId()]);
     }
   }
 

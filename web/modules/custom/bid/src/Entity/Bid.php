@@ -152,6 +152,7 @@ class Bid extends EditorialContentEntityBase {
    */
   public function postSave(EntityStorageInterface $storage, $update = TRUE) {
     $this->invalidateTagsOnSave($update);
+
     $offer = Offer::load($this->get('offer_id')->target_id);
     Cache::invalidateTags($offer->getCacheTagsToInvalidate());
   }

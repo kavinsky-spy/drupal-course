@@ -9,6 +9,7 @@ use Drupal\Core\Menu\MenuLinkDefault;
  * Displays the number of offers.
  */
 class MyOffers extends MenuLinkDefault {
+
   /**
    * {@inheritdoc}
    */
@@ -28,12 +29,15 @@ class MyOffers extends MenuLinkDefault {
     }
   }
 
-/**
- * {@inheritDoc}
- *
- * @return void
- */
+  /**
+   * {@inheritDoc}
+   */
   public function getCacheContexts() {
+
+    return ['user'];
+  }
+
+  public function getCacheTags() {
     return ['my_offers_user_' . \Drupal::currentUser()->id()];
   }
 }
