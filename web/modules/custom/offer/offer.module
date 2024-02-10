@@ -45,6 +45,17 @@ function template_preprocess_offer(array &$variables) {
   $offer = $variables['elements']['#offer'];
   // The full offer object
   $variables['offer'] = $offer;
+
+  // render compact user profile
+  $entity_type = 'user';
+  $entity_id = $offer->getOwnerId();
+
+  $view_mode = 'compact';
+  $entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id);
+
+  $view_builder = \Drupal::entityTypeManager()->getViewBuilder($entity_type);
+  $user_to_reader = $view_builder->view($entity, $view_mode);
+  $variables['user_profile'] = $user_to_reader;
 }
 /**
  * Adds template possibility for view modes
@@ -123,4 +134,26 @@ function offer_user_login($account) {
 
   $response = new RedirectResponse("/");
   $middleware->setRedirectResponse($response);
+}
+
+
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function offer_theme_suggestions_user(array $variables) {
+  return[
+    'user__' . $variables['elements']['#view_mode']
+  ];
+}
+
+
+/**
+ * Prepares variables for templates.
+ * implements hook_preprocess_HOOK()
+ */
+function template_preprocess_offer_userprofile(array &$variables) {
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
 }
